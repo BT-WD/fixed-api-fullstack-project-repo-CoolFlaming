@@ -1,7 +1,7 @@
 const categoryInputs = document.querySelectorAll('input[name="category"]');
 const typeSelect = document.getElementById('type');
 const safeModeCheckbox = document.getElementById('safeMode');
-const multiJokeCheckbox = document.getElementById('multiJoke');
+const jokeCountSelect = document.getElementById('jokeCount');
 const darkModeCheckbox = document.getElementById('darkMode');
 const jokeContainer = document.getElementById('jokeContainer');
 const getJokeBtn = document.getElementById('getJokeBtn');
@@ -26,7 +26,7 @@ async function fetchJoke() {
   const category = getSelectedCategories();
   const type = typeSelect.value;
   const safeMode = safeModeCheckbox.checked;
-  const multiJoke = multiJokeCheckbox.checked;
+  const jokeCount = jokeCountSelect.value;
 
   let url = `https://v2.jokeapi.dev/joke/${category}`;
   const params = new URLSearchParams();
@@ -35,8 +35,8 @@ async function fetchJoke() {
     params.append('type', type);
   }
 
-  if (multiJoke) {
-    params.append('amount', '3');
+  if (jokeCount > 1) {
+    params.append('amount', jokeCount);
   }
 
   if (safeMode) {
