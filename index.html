@@ -3,9 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Full Stack Project</title>
+    <title>Joke Generator</title>
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <!-- You code goes here-->
+    <div class="container">
+      <h1>Joke Generator</h1>
+      <div class="filters">
+        <div class="category-group">
+          <span>Categories:</span>
+          <div class="category-grid">
+            <label class="category-toggle">
+              <input type="checkbox" name="category" value="Programming" checked>
+              <span>Programming</span>
+            </label>
+            <label class="category-toggle">
+              <input type="checkbox" name="category" value="Misc" checked>
+              <span>Misc</span>
+            </label>
+            <label class="category-toggle">
+              <input type="checkbox" name="category" value="Pun" checked>
+              <span>Pun</span>
+            </label>
+            <label class="category-toggle">
+              <input type="checkbox" name="category" value="Spooky" checked>
+              <span>Spooky</span>
+            </label>
+            <label class="category-toggle">
+              <input type="checkbox" name="category" value="Christmas" checked>
+              <span>Christmas</span>
+            </label>
+          </div>
+        </div>
+        <label for="type">Type:</label>
+        <select id="type">
+          <option value="single">Single</option>
+          <option value="twopart">Two-part</option>
+          <option value="any">Any</option>
+        </select>
+        <label for="safeMode">Safe Mode:</label>
+        <input type="checkbox" id="safeMode" checked>
+        <label for="multiJoke">Multi-joke (3-5):</label>
+        <input type="checkbox" id="multiJoke">
+        <label for="darkMode">Dark Mode:</label>
+        <input type="checkbox" id="darkMode">
+      </div>
+      <div id="jokeContainer">
+        <!-- Jokes will be displayed here -->
+      </div>
+      <button id="getJokeBtn">Get Another Joke</button>
+    </div>
+    <script src="index.js"></script>
   </body>
 </html>
