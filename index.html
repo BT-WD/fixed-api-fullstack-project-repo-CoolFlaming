@@ -58,10 +58,34 @@
         </select>
         <label for="darkMode">Dark Mode:</label>
         <input type="checkbox" id="darkMode">
+        <label for="showRated">Show Rated Jokes:</label>
+        <input type="checkbox" id="showRated">
       </div>
       <div id="jokeContainer">
         <!-- Jokes will be displayed here -->
       </div>
+      <div id="statsContainer" style="margin-top: 20px; text-align: center;">
+        <p id="jokeStats"></p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap;">
+          <button id="showLikedBtn" style="width: auto; flex: 1; min-width: 120px;">Show Liked</button>
+          <button id="showDislikedBtn" style="width: auto; flex: 1; min-width: 120px;">Show Disliked</button>
+          <button id="clearStatsBtn" style="width: auto; flex: 1; min-width: 120px;">Clear History</button>
+        </div>
+      </div>
+      
+      <!-- History Modal -->
+      <div id="historyModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="historyTitle">Liked Jokes</h2>
+            <button class="close-modal">&times;</button>
+          </div>
+          <div class="modal-body" id="historyList">
+            <!-- Jokes will be listed here -->
+          </div>
+        </div>
+      </div>
+      
       <button id="getJokeBtn">Get Another Joke</button>
     </div>
     <script src="index.js"></script>

@@ -150,3 +150,223 @@ button {
 button:hover {
   background-color: #45a049;
 }
+
+.joke-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.like-btn, .dislike-btn {
+  flex: 1;
+  max-width: 100px;
+  padding: 8px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .like-btn, body.dark-mode .dislike-btn {
+  background-color: #555;
+  color: #f0f0f0;
+  border-color: #666;
+}
+
+.like-btn:hover {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+body.dark-mode .like-btn:hover {
+  background-color: #2d5016;
+  border-color: #28a745;
+}
+
+.dislike-btn:hover {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+body.dark-mode .dislike-btn:hover {
+  background-color: #5a1e1e;
+  border-color: #dc3545;
+}
+
+.like-btn.active {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.dislike-btn.active {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+.joke.liked {
+  border-left: 4px solid #28a745;
+}
+
+.joke.disliked {
+  border-left: 4px solid #dc3545;
+}
+
+#statsContainer {
+  text-align: center;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+body.dark-mode #statsContainer {
+  background-color: #555;
+}
+
+#clearStatsBtn {
+  width: auto;
+  padding: 8px 15px;
+  background-color: #6c757d;
+  font-size: 14px;
+}
+
+#clearStatsBtn:hover {
+  background-color: #5a6268;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 0;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+}
+
+body.dark-mode .modal-content {
+  background-color: #444;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  transition: border-color 0.3s;
+}
+
+body.dark-mode .modal-header {
+  border-bottom-color: #666;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #333;
+  transition: color 0.3s;
+}
+
+body.dark-mode .modal-header h2 {
+  color: #f0f0f0;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  transition: color 0.3s;
+}
+
+.close-modal:hover {
+  color: #333;
+  background-color: transparent;
+}
+
+body.dark-mode .close-modal:hover {
+  color: #f0f0f0;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.history-joke {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border-left: 4px solid #ddd;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .history-joke {
+  background-color: #555;
+}
+
+.history-joke.liked {
+  border-left-color: #28a745;
+}
+
+.history-joke.disliked {
+  border-left-color: #dc3545;
+}
+
+.history-joke-content {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.history-joke-category {
+  font-size: 0.9rem;
+  color: #666;
+  transition: color 0.3s;
+}
+
+body.dark-mode .history-joke-category {
+  color: #ccc;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+body.dark-mode .empty-history {
+  color: #aaa;
+}
