@@ -107,6 +107,12 @@ body.dark-mode .filters select, body.dark-mode .filters input[type="checkbox"] {
   border-color: #666;
 }
 
+body.dark-mode .filters input[type="text"] {
+  background-color: #555;
+  color: #f0f0f0;
+  border-color: #666;
+}
+
 #jokeContainer {
   margin-bottom: 20px;
   min-height: 100px;

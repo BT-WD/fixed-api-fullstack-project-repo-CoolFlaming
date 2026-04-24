@@ -1,6 +1,7 @@
 const categoryInputs = document.querySelectorAll('input[name="category"]');
 const typeSelect = document.getElementById('type');
 const safeModeCheckbox = document.getElementById('safeMode');
+const searchInput = document.getElementById('search');
 const jokeCountSelect = document.getElementById('jokeCount');
 const darkModeCheckbox = document.getElementById('darkMode');
 const showRatedCheckbox = document.getElementById('showRated');
@@ -172,6 +173,7 @@ async function fetchJoke() {
   const category = getSelectedCategories();
   const type = typeSelect.value;
   const safeMode = safeModeCheckbox.checked;
+  const search = searchInput.value.trim();
   const jokeCount = jokeCountSelect.value;
 
   let url = `https://v2.jokeapi.dev/joke/${category}`;
@@ -179,6 +181,10 @@ async function fetchJoke() {
 
   if (type !== 'any') {
     params.append('type', type);
+  }
+
+  if (search) {
+    params.append('contains', search);
   }
 
   if (jokeCount > 1) {
@@ -225,7 +231,7 @@ function displayJoke(jokes) {
   jokeContainer.innerHTML = '';
 
   if (!jokes || jokes.length === 0) {
-    jokeContainer.innerHTML = '<p>No new jokes available. Try changing your filters or clearing your history!</p>';
+    jokeContainer.innerHTML = '<p>No new jokes available. Try changing your filters, search terms, or clearing your history!</p>';
     return;
   }
 
@@ -286,8 +292,6 @@ function updateButtonStates(jokeDiv, type) {
 
 getJokeBtn.addEventListener('click', fetchJoke);
 
-// Load initial stats
 updateStats();
 
-// Load initial joke
 fetchJoke();
