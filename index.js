@@ -15,6 +15,10 @@ const historyModal = document.getElementById('historyModal');
 const historyTitle = document.getElementById('historyTitle');
 const historyList = document.getElementById('historyList');
 const closeModalBtn = document.querySelector('.close-modal');
+const exportRatingsBtn = document.getElementById('exportRatingsBtn');
+const importRatingsBtn = document.getElementById('importRatingsBtn');
+const importRatingsInput = document.getElementById('importRatingsInput');
+const importStatus = document.getElementById('importStatus');
 
 const LIKED_JOKES_KEY = 'likedJokes';
 const DISLIKED_JOKES_KEY = 'dislikedJokes';
@@ -293,6 +297,7 @@ function displayJoke(jokes) {
       <div class="joke-buttons">
         <button class="like-btn ${rating === 'liked' ? 'active' : ''}" data-joke-hash="${jokeHash}">👍 Like</button>
         <button class="dislike-btn ${rating === 'disliked' ? 'active' : ''}" data-joke-hash="${jokeHash}">👎 Dislike</button>
+        <button class="share-btn">🔗 Share</button>
       </div>
     `;
     jokeContainer.appendChild(jokeDiv);
@@ -300,6 +305,9 @@ function displayJoke(jokes) {
     // Add event listeners to the buttons
     const likeBtn = jokeDiv.querySelector('.like-btn');
     const dislikeBtn = jokeDiv.querySelector('.dislike-btn');
+    const shareBtn = jokeDiv.querySelector('.share-btn');
+
+    shareBtn.addEventListener('click', () => shareJoke(joke));
 
     likeBtn.addEventListener('click', () => {
       saveRating(joke, 'like');
@@ -329,6 +337,122 @@ function updateButtonStates(jokeDiv, type) {
     jokeDiv.classList.remove('liked');
   }
 }
+
+function getShareText(joke) {
+  return joke.joke || `${joke.setup}\n${joke.delivery}`;
+}
+
+function showImportStatus(message, isError = false) {
+  if (!importStatus) return;
+  importStatus.textContent = message;
+  importStatus.className = `import-status ${isError ? 'error' : 'success'}`;
+  setTimeout(() => {
+    importStatus.textContent = '';
+    importStatus.className = 'import-status';
+  }, 4000);
+}
+
+async function shareJoke(joke) {
+  const text = getShareText(joke);
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'Funny Joke', text });
+      return;
+    } catch (error) {
+      console.warn('Web Share failed or was canceled:', error);
+    }
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showImportStatus('Joke copied to clipboard.');
+      return;
+    } catch (error) {
+      console.warn('Clipboard copy failed:', error);
+    }
+  }
+
+  window.prompt('Copy this joke:', text);
+}
+
+function mergeRatings(existing, imported) {
+  const merged = [...existing];
+  imported.forEach((joke) => {
+    if (!joke || !joke.hash) return;
+    const index = merged.findIndex((item) => item.hash === joke.hash);
+    if (index === -1) {
+      merged.push(joke);
+    } else {
+      merged[index] = { ...merged[index], ...joke };
+    }
+  });
+  return merged;
+}
+
+function exportRatings() {
+  const data = {
+    liked: getLikedJokes(),
+    disliked: getDislikedJokes(),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = 'joke-ratings.json';
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importRatingsFile(file) {
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!parsed || typeof parsed !== 'object') {
+        throw new Error('Invalid file structure');
+      }
+
+      const importedLiked = Array.isArray(parsed.liked) ? parsed.liked : [];
+      const importedDisliked = Array.isArray(parsed.disliked) ? parsed.disliked : [];
+
+      const liked = mergeRatings(getLikedJokes(), importedLiked);
+      const disliked = mergeRatings(getDislikedJokes(), importedDisliked);
+
+      const adjustedLiked = liked.filter((joke) => !disliked.some((d) => d.hash === joke.hash));
+      const adjustedDisliked = disliked.filter((joke) => !liked.some((l) => l.hash === joke.hash));
+
+      localStorage.setItem(LIKED_JOKES_KEY, JSON.stringify(adjustedLiked));
+      localStorage.setItem(DISLIKED_JOKES_KEY, JSON.stringify(adjustedDisliked));
+      updateStats();
+      showImportStatus(`Imported ${importedLiked.length} liked and ${importedDisliked.length} disliked jokes.`);
+      fetchJoke();
+    } catch (error) {
+      console.error('Import failed:', error);
+      showImportStatus('Failed to import ratings. Please provide a valid JSON export.', true);
+    }
+  };
+
+  reader.onerror = () => {
+    console.error('File read failed');
+    showImportStatus('Failed to read file. Please try again.', true);
+  };
+
+  reader.readAsText(file);
+}
+
+exportRatingsBtn.addEventListener('click', exportRatings);
+importRatingsBtn.addEventListener('click', () => importRatingsInput.click());
+importRatingsInput.addEventListener('change', (event) => {
+  const file = event.target.files ? event.target.files[0] : null;
+  if (file) {
+    importRatingsFile(file);
+  }
+  event.target.value = '';
+});
 
 getJokeBtn.addEventListener('click', fetchJoke);
 
