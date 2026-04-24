@@ -18,7 +18,7 @@ const closeModalBtn = document.querySelector('.close-modal');
 const exportRatingsBtn = document.getElementById('exportRatingsBtn');
 const importRatingsBtn = document.getElementById('importRatingsBtn');
 const importRatingsInput = document.getElementById('importRatingsInput');
-const importStatus = document.getElementById('importStatus');
+const toastContainer = document.getElementById('toastContainer');
 
 const LIKED_JOKES_KEY = 'likedJokes';
 const DISLIKED_JOKES_KEY = 'dislikedJokes';
@@ -342,14 +342,26 @@ function getShareText(joke) {
   return joke.joke || `${joke.setup}\n${joke.delivery}`;
 }
 
-function showImportStatus(message, isError = false) {
-  if (!importStatus) return;
-  importStatus.textContent = message;
-  importStatus.className = `import-status ${isError ? 'error' : 'success'}`;
+function showToast(message, type = 'info') {
+  if (!toastContainer) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  toastContainer.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.classList.add('visible');
+  });
+
   setTimeout(() => {
-    importStatus.textContent = '';
-    importStatus.className = 'import-status';
-  }, 4000);
+    toast.classList.remove('visible');
+    toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+  }, 3500);
+}
+
+function showImportStatus(message, isError = false) {
+  showToast(message, isError ? 'error' : 'success');
 }
 
 async function shareJoke(joke) {

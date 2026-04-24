@@ -68,7 +68,6 @@
       </div>
       <div id="statsContainer" style="margin-top: 20px; text-align: center;">
         <p id="jokeStats"></p>
-        <div id="importStatus" class="import-status"></div>
         <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap;">
           <button id="showLikedBtn" class="full-width-button" style="flex: 1; min-width: 120px;">Show Liked</button>
           <button id="showDislikedBtn" class="full-width-button" style="flex: 1; min-width: 120px;">Show Disliked</button>
@@ -78,6 +77,7 @@
         </div>
         <input type="file" id="importRatingsInput" accept="application/json" hidden>
       </div>
+      <div id="toastContainer" class="toast-container" aria-live="polite"></div>
       
       <!-- History Modal -->
       <div id="historyModal" class="modal">

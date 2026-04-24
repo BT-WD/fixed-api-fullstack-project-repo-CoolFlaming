@@ -284,20 +284,50 @@ body.dark-mode .share-btn:hover {
   box-shadow: 0 4px 15px rgba(51, 153, 255, 0.3);
 }
 
-.import-status {
-  min-height: 1.4rem;
-  margin-top: 8px;
-  color: #333;
-  font-size: 0.95rem;
-  text-align: center;
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2000;
+  pointer-events: none;
 }
 
-.import-status.success {
-  color: #155724;
+.toast {
+  min-width: 220px;
+  max-width: 320px;
+  background: rgba(50, 50, 50, 0.95);
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: auto;
 }
 
-.import-status.error {
-  color: #721c24;
+.toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background: rgba(40, 167, 69, 0.95);
+}
+
+.toast.error {
+  background: rgba(220, 53, 69, 0.95);
+}
+
+.toast.info {
+  background: rgba(33, 37, 41, 0.95);
+}
+
+body.dark-mode .toast {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 body.dark-mode .dislike-btn:hover {
