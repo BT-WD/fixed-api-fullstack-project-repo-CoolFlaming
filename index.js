@@ -169,12 +169,45 @@ historyModal.addEventListener('click', (e) => {
 
 clearStatsBtn.addEventListener('click', clearAllStats);
 
+async function fetchEnoughJokes(url, desiredCount) {
+  const collected = [];
+  const seenHashes = new Set();
+  const maxAttempts = 4;
+  let attempt = 0;
+
+  while (attempt < maxAttempts && collected.length < desiredCount) {
+    attempt += 1;
+    const response = await fetch(url);
+    const data = await response.json();
+    const jokes = data.jokes ? data.jokes : [data];
+
+    const newJokes = jokes.filter(joke => {
+      const hash = getJokeHash(joke);
+      return !seenHashes.has(hash) && !isJokeRated(hash);
+    });
+
+    newJokes.forEach(joke => {
+      const hash = getJokeHash(joke);
+      if (!seenHashes.has(hash)) {
+        seenHashes.add(hash);
+        collected.push(joke);
+      }
+    });
+
+    if (newJokes.length === 0) {
+      break;
+    }
+  }
+
+  return collected.slice(0, desiredCount);
+}
+
 async function fetchJoke() {
   const category = getSelectedCategories();
   const type = typeSelect.value;
   const safeMode = safeModeCheckbox.checked;
   const search = searchInput.value.trim();
-  const jokeCount = jokeCountSelect.value;
+  const jokeCount = Number(jokeCountSelect.value);
 
   let url = `https://v2.jokeapi.dev/joke/${category}`;
   const params = new URLSearchParams();
@@ -200,9 +233,16 @@ async function fetchJoke() {
   }
 
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    filterAndDisplayJokes(data);
+    const showRated = showRatedCheckbox.checked;
+
+    if (!showRated && jokeCount > 1) {
+      const jokes = await fetchEnoughJokes(url, jokeCount);
+      displayJoke(jokes);
+    } else {
+      const response = await fetch(url);
+      const data = await response.json();
+      filterAndDisplayJokes(data);
+    }
   } catch (error) {
     console.error('Error fetching joke:', error);
     jokeContainer.innerHTML = '<p>Sorry, couldn\'t fetch a joke right now.</p>';

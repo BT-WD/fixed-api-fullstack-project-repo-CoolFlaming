@@ -11,23 +11,29 @@ body {
 }
 
 body.dark-mode {
-  background-color: #333;
-  color: #f0f0f0;
+  background-color: #121212;
+  color: #f9f9f9;
 }
 
 .container {
+  position: relative;
+  z-index: 1;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   max-width: 600px;
   width: 100%;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s, box-shadow 0.5s;
 }
 
 body.dark-mode .container {
-  background-color: #444;
-  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+  background-color: #1e1e1e;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.35);
+}
+
+.container:hover {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
 }
 
 h1 {
@@ -119,15 +125,36 @@ body.dark-mode .filters input[type="text"] {
 }
 
 .joke {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
   margin-bottom: 15px;
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 5px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.5s, color 0.3s;
+  cursor: pointer;
+  color: #222;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 body.dark-mode .joke {
-  background-color: #555;
+  background-color: #262626;
+  color: #f5f5f5;
+}
+
+.joke:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.joke-buttons {
+  position: relative;
+  z-index: 4;
+  pointer-events: auto;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
 }
 
 .joke-category {
@@ -137,12 +164,13 @@ body.dark-mode .joke {
 }
 
 body.dark-mode .joke-category {
-  color: #ccc;
+  color: #d5d5d5;
 }
 
 button {
-  display: block;
-  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px;
   background-color: #4CAF50;
   color: white;
@@ -150,11 +178,24 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.full-width-button {
+  display: block;
+  width: 100%;
 }
 
 button:hover {
   background-color: #45a049;
+}
+
+button:focus-visible {
+  outline: 2px solid #88d18a;
+  outline-offset: 2px;
 }
 
 .joke-buttons {
@@ -165,6 +206,10 @@ button:hover {
 }
 
 .like-btn, .dislike-btn {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+  width: auto;
   flex: 1;
   max-width: 100px;
   padding: 8px;
@@ -174,7 +219,7 @@ button:hover {
   color: #333;
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, box-shadow 0.2s;
 }
 
 body.dark-mode .like-btn, body.dark-mode .dislike-btn {
@@ -187,22 +232,26 @@ body.dark-mode .like-btn, body.dark-mode .dislike-btn {
   background-color: #d4edda;
   border-color: #28a745;
   color: #155724;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
 body.dark-mode .like-btn:hover {
   background-color: #2d5016;
   border-color: #28a745;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
 .dislike-btn:hover {
   background-color: #f8d7da;
   border-color: #dc3545;
   color: #721c24;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
 body.dark-mode .dislike-btn:hover {
   background-color: #5a1e1e;
   border-color: #dc3545;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
 .like-btn.active {
@@ -259,15 +308,19 @@ body.dark-mode #statsContainer {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: auto;
+  pointer-events: none;
 }
 
 .modal.show {
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
 }
 
 .modal-content {
+  position: relative;
+  z-index: 1010;
   background-color: white;
   padding: 0;
   border-radius: 10px;
@@ -276,11 +329,17 @@ body.dark-mode #statsContainer {
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.5s;
 }
 
 body.dark-mode .modal-content {
-  background-color: #444;
+  background-color: #1d1d1d;
+  color: #f1f1f1;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.55);
+}
+
+.modal.show .modal-content {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
 }
 
 .modal-header {
@@ -337,11 +396,18 @@ body.dark-mode .close-modal:hover {
   background-color: #f9f9f9;
   border-radius: 5px;
   border-left: 4px solid #ddd;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
 }
 
 body.dark-mode .history-joke {
-  background-color: #555;
+  background-color: #2a2a2a;
+  color: #f4f4f4;
+  border-left-color: #444;
+}
+
+.history-joke:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 .history-joke.liked {
@@ -364,13 +430,17 @@ body.dark-mode .history-joke {
 }
 
 body.dark-mode .history-joke-category {
-  color: #ccc;
+  color: #ddd;
 }
 
 .empty-history {
   text-align: center;
   padding: 40px 20px;
   color: #999;
+}
+
+body.dark-mode .empty-history {
+  color: #ccc;
 }
 
 body.dark-mode .empty-history {
